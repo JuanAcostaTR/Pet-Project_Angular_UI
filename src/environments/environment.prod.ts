@@ -1,3 +1,4 @@
 export const environment = {
-  production: true
+  production: true,
+  webapiURL : 'https://localhost:44380/api/Mascota'
 };
