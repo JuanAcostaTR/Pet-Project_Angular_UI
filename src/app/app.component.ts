@@ -10,10 +10,10 @@ import { NgbDateStruct } from '@ng-bootstrap/ng-bootstrap';
 })
 export class AppComponent {
   FechaNacimientoModel: NgbDateStruct ;
-  
   mascota:Mascota = new Mascota();
   datatable:any = [];
-
+  tipoMascota:{ [key: string]: string } = {1: "Perro", 2: "Gato"};
+ 
   constructor(private mascotaService:MascotaService){
     var today = new Date();
     this.FechaNacimientoModel = { 
@@ -98,8 +98,8 @@ export class AppComponent {
       new Date(this.FechaNacimientoModel.year, this.FechaNacimientoModel.month, this.FechaNacimientoModel.day);
   }
 
-  onDropdownTipoMascotaChange(value:number){
-    this.mascota.IDTipo = value;
+  onDropdownTipoMascotaChange(value:string){
+    this.mascota.IDTipo = parseInt(value);
   }
 
   onLazarilloChanged(){
