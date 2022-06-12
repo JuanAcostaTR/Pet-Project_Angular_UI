@@ -1,8 +1,7 @@
-
 export class Mascota {
     ID:number = 0;
     Nombre:string = "";
-    FechaNacimiento:Date| null = null;
+    FechaNacimiento:Date| null = new Date();
     Observaciones:string = "";
     SoporteEmocional:boolean = false;
     Lazarillo:boolean = false;

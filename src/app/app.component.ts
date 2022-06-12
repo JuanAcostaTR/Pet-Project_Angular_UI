@@ -1,6 +1,7 @@
 import { Component } from '@angular/core';
 import { Mascota } from './models/mascota';
 import { MascotaService } from './services/mascota.service';
+import { NgbDateStruct } from '@ng-bootstrap/ng-bootstrap';
 
 @Component({
   selector: 'app-root',
@@ -8,11 +9,18 @@ import { MascotaService } from './services/mascota.service';
   styleUrls: ['./app.component.css']
 })
 export class AppComponent {
+  FechaNacimientoModel: NgbDateStruct ;
+  
   mascota:Mascota = new Mascota();
   datatable:any = [];
 
   constructor(private mascotaService:MascotaService){
-
+    var today = new Date();
+    this.FechaNacimientoModel = { 
+      day: today.getDate(), 
+      month: today.getUTCMonth() + 1, 
+      year: today.getUTCFullYear()};
+  console.log(this.FechaNacimientoModel);
   }
 
   ngOnInit(): void {
@@ -27,6 +35,10 @@ export class AppComponent {
   }
 
   onAddMascota(mascota:Mascota):void{
+    if(!mascota.Nombre || !mascota.IDTipo){
+      alert('Por favor complete los datos basicos');
+      return;
+    }
     this.mascotaService.addMascota(mascota).subscribe(res => {
       if(res){
         alert(`La mascota ${mascota.Nombre} se ha registrado con exito!`);
@@ -67,12 +79,38 @@ export class AppComponent {
     this.mascota.Nombre = select.Nombre;
     this.mascota.FechaNacimiento = select.FechaNacimiento;
     this.mascota.Observaciones = select.Observaciones;
+    this.mascota.IDTipo = select.IDTipo;
+    this.mascota.SoporteEmocional = select.SoporteEmocional;
+    this.mascota.Lazarillo = select.Lazarillo;
   }
 
   clear(){
-    this.mascota.ID =0;
+    this.mascota.ID = 0;
     this.mascota.Nombre = "";
     this.mascota.FechaNacimiento = new Date();
     this.mascota.Observaciones = "";
+    this.mascota.Lazarillo = false;
+    this.mascota.SoporteEmocional = false;
+  }
+
+  onFechaNacimientoChange(){
+    this.mascota.FechaNacimiento = 
+      new Date(this.FechaNacimientoModel.year, this.FechaNacimientoModel.month, this.FechaNacimientoModel.day);
+  }
+
+  onDropdownTipoMascotaChange(value:number){
+    this.mascota.IDTipo = value;
+  }
+
+  onLazarilloChanged(){
+    if(this.mascota.Lazarillo){
+      this.mascota.SoporteEmocional = false;
+    }
+  }
+
+  onSoporteEmocionalChanged(){
+    if(this.mascota.SoporteEmocional){
+      this.mascota.Lazarillo = false;
+    }
   }
 }

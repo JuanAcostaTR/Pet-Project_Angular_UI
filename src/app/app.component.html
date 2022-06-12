@@ -1,30 +1,60 @@
 <div class="container">
   <nav class="navbar navbar-light bg-light" style="background-color: #e7d20f;">
     <a class="navbar-brand" href="#" style="background-color:#e7d20f; width: 1800px;">
-        <img src="../assets/logo.png" style="width: 200px; float:left"/>
+        <img src="../assets/logo0.png" style="width: 200px; float:left"/>
     </a>
   </nav>
   <div class="row text-center mt-5">
     <div class="col">
-      <h2>CRUD Mascotas</h2>
+      <h2>CRUD</h2>
     </div>
   </div>
   <div class="row mt-5">
-    <div class="col-md-2">
+    <div class="col-md-1">
       <label for="txtId" class="from-label">ID</label>
       <input type="text" name="id" id="txtId" class="form-control" [(ngModel)]="mascota.ID" disabled="true">
     </div>
-    <div class="col-md-4">
+    <div class="col-md-3">
       <label for="txtNombre" class="from-label">Nombre</label>
       <input type="text" name="id" id="txtNombre" class="form-control" [(ngModel)]="mascota.Nombre">
     </div>
     <div class="col-md-2">
-      <label for="txtEdad" class="from-label">Fecha de Nacimiento</label>
-      <input type="text" name="id" id="txtEdad" class="form-control" [(ngModel)]="mascota.FechaNacimiento">
+      <label for="txtEdad" class="from-label">Fecha de Nacimiento</label> 
+      <div class="input-group">
+        <input id="txtEdad" (ngModelChange)="onFechaNacimientoChange()" class="form-control" placeholder="yyyy-mm-dd"
+               name="FechaNacimiento" [(ngModel)]="FechaNacimientoModel" ngbDatepicker #d="ngbDatepicker">
+        <button class="btn btn-outline-secondary calendar" (click)="d.toggle()" type="button"></button>
+      </div>
     </div>
-    <div class="col-md-4">
+    <div class="col-md-3">
       <label for="txtDesc" class="from-label">Descripcion</label>
-      <input type="text" name="id" id="txtDesc" class="form-control" [(ngModel)]="mascota.Observaciones">
+      <textarea name="id" id="txtDesc" class="form-control" rows="3" [(ngModel)]="mascota.Observaciones"></textarea>
+      <!-- Agrandar -->
+    </div>
+
+    <div class="col-md-2">
+      <div ngbDropdown class="d-inline-block">
+        <button type="button" class="btn btn-outline-primary" id="dropdownBasic1" ngbDropdownToggle>Tipo de Mascota</button>
+        <div ngbDropdownMenu aria-labelledby="dropdownBasic1">
+          <button ngDefaultControl (click)="onDropdownTipoMascotaChange(1)" ngbDropdownItem>Perro</button>
+          <button ngDefaultControl (click)="onDropdownTipoMascotaChange(2)" ngbDropdownItem>Gato</button>
+        </div>
+      </div>
+      <!-- Agrandar -->
+    </div>
+
+    <div class="col-md-4">
+      <label for="txtDesc" class="from-label">Asistencia</label>
+      <div class="custom-control custom-radio">
+        <input [(ngModel)]="mascota.Lazarillo" type="checkbox" (ngModelChange)="onLazarilloChanged()" id="customControlValidation2" name="radio-stacked" required>
+        <label class="custom-control-label" for="customControlValidation2">Lazarillo </label>
+        <i class="fa-solid fa-dog"></i>
+      </div>
+      <div class="custom-control custom-radio mb-3">
+        <input [(ngModel)]="mascota.SoporteEmocional" type="checkbox" (ngModelChange)="onSoporteEmocionalChanged()" id="customControlValidation3" name="radio-stacked" required>
+        <label class="custom-control-label" for="customControlValidation3">Soporte Emocional </label>
+        <i class="fa-solid fa-heart"></i>
+      </div>
     </div>
   </div>
   <div class="row mt-5">
@@ -46,15 +76,23 @@
             <th>Nombre</th>
             <th>Fecha Nacimiento</th>
             <th>Observaciones</th>
+            <th>Tipo de Mascota</th>
+            <th>Soporte Emocional</th>
           </tr>
         </thead>
         <tbody>
           <tr *ngFor="let item of datatable">
             <td><input type="button" value="Seleccionar" (click)="onSetData(item)"></td>
-            <td> {{ item.ID }} </td>
+            <td>{{ item.ID }} </td>
             <td>{{ item.Nombre }}</td>
             <td>{{ item.FechaNacimiento | date:'yyyy-MM-dd' }}</td>
             <td>{{ item.Observaciones }}</td>
+            <td>{{ item.IDTipo}}</td>
+            <td>
+              <i *ngIf="item.Lazarillo" class="fa-solid fa-dog"></i>
+              <i *ngIf="item.SoporteEmocional" class="fa-solid fa-heart"></i>
+            </td>
+            <!-- Colocar icono condicional  -->
           </tr>
         </tbody>
       </table>
